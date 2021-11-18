@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-CHEF_CONF="$HOME/.chef/config.rb"
-CHEF_CONF_LATEST="$HOME/.chef/config.latest.rb"
-CHEF_CONF_PREVIOUS="$HOME/.chef/config.previous.rb"
+CHEF_CONF="${HOME}/.chef/config.rb"
+CHEF_CONF_LATEST="${HOME}/.chef/config.latest.rb"
+CHEF_CONF_PREVIOUS="${HOME}/.chef/config.previous.rb"
 OPTION="$1"
 
 __usage(){
