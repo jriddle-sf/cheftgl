@@ -7,15 +7,15 @@ OPTION="$1"
 
 __usage(){
   echo ''
-  echo -e "$(basename "$0") - Usage"
+  echo "Usage: $(basename "$0") [option]"
   echo ''
-  echo -e '\t-l | --latest\tEnable the global Chef Config file'
-  echo -e '\t-p | --previous\tDisable the global Chef Config file'
-  echo -e '\t-h | --help\tShows usage'
-  echo -e '\t-i | --install\tInstalls Chef Config'
-  echo -e '\t-d | --dump\tPrints active global Chef Config file'
-  echo -e '\t-s | --status\tDisplays current status of Chef Config'
-  echo -e '\t-v | --validate\tValidates Chef Config Files'
+  echo '  -d | --dump      Dumps the config to the output'
+  echo '  -h | --help      Shows usage'
+  echo '  -i | --install   Installs Chef Config'
+  echo '  -l | --latest    Enables the latest config.'
+  echo '  -p | --previous  Enables the previous config.'
+  echo '  -s | --status    Displays the filename for the active Chef config'
+  echo '  -v | --validate  Validates Chef Config Files'
   echo ''
 } 
 
@@ -62,22 +62,9 @@ __install(){
   fi
 }
 
-__is_latest(){
-  local active_file
-  active_file="$(readlink "$CHEF_CONF")"
-  if [ "$active_file" = "$CHEF_CONF_LATEST" ]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
 __status(){
-  if __is_latest; then
-    echo "Latest Chef config enabled"
-  else
-    echo "Previous Chef config enabled"
-  fi
+  active_config="$(readlink "$CHEF_CONF")"
+  echo "Active config is ${active_config}"
 }
 
 __dump(){
@@ -111,11 +98,8 @@ __validate(){
 main(){
   option="$1"
   case "$option" in
-    -p|--previous)
-      __previous
-    ;;
-    -t|--latest)
-      __latest
+    -d|--dump)
+      __dump
     ;;
     -h|--help)
       __usage
@@ -123,8 +107,11 @@ main(){
     -i|--install)
       __install  
     ;;
-    -d|--dump)
-    __dump
+    -l|--latest)
+      __latest
+    ;;
+    -p|--previous)
+      __previous
     ;;
     -s|--status)
       __status
